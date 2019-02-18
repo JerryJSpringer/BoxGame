@@ -1,0 +1,20 @@
+{
+  BodyDef: {
+    type: DynamicBody,
+    x: 100,
+    y: 100
+  },
+
+  Fixtures: [
+    {
+      isSensor: false,
+      type: CircleShape,
+      radius: .25,
+      density: .5f,
+      friction: .4f,
+      x: 0,
+      y: 0,
+      group: player
+    }
+  ]
+}
