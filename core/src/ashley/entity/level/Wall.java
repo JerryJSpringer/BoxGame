@@ -22,8 +22,15 @@ import com.mygdx.game.managers.PhysicsManager;
  */
 public class Wall extends Entity {
 
+	/** The JSON file that describes the walls. */
 	private static final String WALL_JSON = "core/assets/BodyDefinitions/Wall.json";
 
+	/**
+	 * Creates the walls of the game.
+	 * Only one of this entity should be created.
+	 *
+	 * @param world the physics world that the wall will exist in.
+	 */
 	public Wall(final World world) {
 		super();
 

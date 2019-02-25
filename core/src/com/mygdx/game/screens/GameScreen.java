@@ -7,7 +7,6 @@ import ashley.systems.MovementSystem;
 import ashley.systems.PlayerInputSystem;
 import ashley.systems.RenderSystem;
 import ashley.systems.SpriteUpdateSystem;
-import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Screen;
@@ -23,6 +22,8 @@ import com.mygdx.game.managers.InputHandler;
 import com.mygdx.game.managers.PhysicsManager;
 
 /**
+ * The main game screen.
+ *
  * @author Jerry Springer
  * @version 02 18 2019
  */
@@ -58,7 +59,7 @@ public class GameScreen implements Screen {
         // Engine
         engine = new Engine();
 
-        engine.addSystem(new PlayerInputSystem(world));
+        engine.addSystem(new PlayerInputSystem());
 		engine.addSystem(new RenderSystem(game.batch));
         engine.addSystem(new MovementSystem());
         engine.addSystem(new SpriteUpdateSystem());
@@ -73,13 +74,13 @@ public class GameScreen implements Screen {
 		rayHandler.useCustomViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
 		rayHandler.setAmbientLight(0.01f, 0.01f, 0.05f, 1f);
 		rayHandler.setBlurNum(2);
-		rayHandler.setShadows(true);
 		rayHandler.setCulling(true);
+		rayHandler.setShadows(false);
 		//rayHandler.setLightShader(Gaussian.createBlurShader((int) camera.viewportWidth, (int) camera.viewportHeight));
 
-		PointLight p1 = new PointLight(rayHandler, 75, Color.WHITE, 20, 26, 26);
-		p1.setSoft(true);
-		p1.setStaticLight(false);
+		//PointLight p1 = new PointLight(rayHandler, 75, Color.WHITE, 20, 26, 26);
+		//p1.setSoft(true);
+		//p1.setStaticLight(false);
 
         // Entities
 		//engine.addEntity(new Background());
@@ -93,13 +94,13 @@ public class GameScreen implements Screen {
 
     	viewport.apply();
 
-        engine.update(1/60f);
-        world.step(1/60f, 6, 2);
+        engine.update(delta);
+        world.step(delta, 6, 2);
 
         rayHandler.setCombinedMatrix(camera);
 		rayHandler.updateAndRender();
 
-        debugRenderer.render(world, debugMatrix);
+        // debugRenderer.render(world, debugMatrix);
     }
 
     @Override

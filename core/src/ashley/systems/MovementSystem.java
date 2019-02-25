@@ -8,19 +8,31 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.game.managers.PhysicsManager;
 
 /**
+ * The movement system for all movable bodies.
+ *
  * @author Jerry Springer
  * @project Autumn 2018
  */
 public class MovementSystem extends EntitySystem {
 
+    /** The array of entities. */
     private ImmutableArray<Entity> entities;
 
+    /**
+     * Creates a new movement system.
+     */
     public MovementSystem() {
         super();
     }
 
+	/**
+	 * Called when a corresponding entity is added to the engine.
+	 *
+	 * @param engine the engine that contains the added entity.
+	 */
     @Override
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(
@@ -30,6 +42,11 @@ public class MovementSystem extends EntitySystem {
                         .get());
     }
 
+    /**
+     * Updates all movable bodies according to their linear velocity scaled to delta time.
+     *
+     * @param deltaTime the time since the last engine update.
+     */
     @Override
     public void update(float deltaTime) {
 
@@ -37,7 +54,7 @@ public class MovementSystem extends EntitySystem {
             Body body = e.getComponent(BodyComponent.class).body;
             MovableComponent movable = e.getComponent(MovableComponent.class);
 
-            body.setLinearVelocity(movable.velocity);
+            body.setLinearVelocity(movable.velocity.scl((float) (deltaTime / PhysicsManager.DELTA_CONSTANT)));
         }
     }
 }

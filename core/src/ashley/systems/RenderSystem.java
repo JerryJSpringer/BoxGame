@@ -12,21 +12,35 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
+ * The system that is used to render all sprites.
+ *
  * @author Jerry Springer
  * @project Autumn 2018
  */
 public class RenderSystem extends EntitySystem {
 
+	/** The array that contains all corresponding entities. */
     private ImmutableArray<Entity> entities;
+
+    /** The sprite batch that will be drawn to. */
     private SpriteBatch batch;
 
-    public RenderSystem(SpriteBatch batch) {
-
+	/**
+	 * Creates a new rendering system.
+	 *
+	 * @param batch the batch that will be drawn to.
+	 */
+	public RenderSystem(SpriteBatch batch) {
         super();
         this.batch = batch;
     }
 
-    @Override
+	/**
+	 * Called when a corresponding entity is added to the engine.
+	 *
+	 * @param engine the engine that contains the added entity.
+	 */
+	@Override
     public void addedToEngine(Engine engine) {
 
         entities = engine.getEntitiesFor(
@@ -36,7 +50,12 @@ public class RenderSystem extends EntitySystem {
                         .get());
     }
 
-    @Override
+	/**
+	 * Renders the sprites to the screen.
+	 *
+	 * @param deltaTime the time since the last update.
+	 */
+	@Override
     public void update(float deltaTime) {
 
         Gdx.gl.glClearColor(0, 0, 0, 0);

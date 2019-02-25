@@ -12,6 +12,8 @@ public class PhysicsManager {
 	public static final int WORLD_SIZE = 52;
 	public static final double SCREEN_SIZE = 52 * METERS_TO_PIXELS;
 
+	public static final double DELTA_CONSTANT = 1/60f;
+
     public static final short PLAYER_GROUP = -1;
     public static final short ENEMY_GROUP = -2;
     public static final short LEVEL_GROUP = -3;

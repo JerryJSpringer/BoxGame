@@ -3,8 +3,10 @@ package com.mygdx.game.screens;
 import com.badlogic.gdx.Screen;
 
 /**
+ * The main menu screen.
+ *
  * @author Jerry Springer
- * @version Autumn 2018
+ * @version 02 18 2019
  */
 public class MainMenuScreen implements Screen {
 

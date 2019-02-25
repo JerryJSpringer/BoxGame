@@ -22,12 +22,19 @@ import com.mygdx.game.managers.InputHandler;
  */
 public class Character extends Entity {
 
+	/** The JSON file that describes the character. */
 	private static final String CHARACTER_JSON = "core/assets/BodyDefinitions/Character.json";
+
+	/** The degree of the cone light that the character uses. */
 	private static final float CONE_DEGREE = 45;
 
-    /**
-     * Creates a new game character with components.
-     */
+	/**
+	 * Creates a new character in the physics world.
+	 *
+	 * @param world the physics world that the entity is being created in.
+	 * @param rayHandler the ray handler that is used to create the light.
+	 * @param inputHandler the input handler that handles player input.
+	 */
     public Character(final World world, final RayHandler rayHandler, final InputHandler inputHandler) {
         super();
 
@@ -35,7 +42,7 @@ public class Character extends Entity {
 		Body body = BodyGenerator.bodyGenerator(Gdx.files.internal(CHARACTER_JSON), world);
 
 		// Creating the point light
-		ConeLight light = new ConeLight(rayHandler, 50, Color.WHITE, 52,
+		ConeLight light = new ConeLight(rayHandler, 500, Color.WHITE, 52,
 				body.getPosition().x, body.getPosition().y, 0, CONE_DEGREE);
 		light.setSoft(true);
 		light.setSoftnessLength(3);

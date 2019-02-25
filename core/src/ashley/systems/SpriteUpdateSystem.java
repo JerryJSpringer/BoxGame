@@ -9,20 +9,31 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.game.managers.PhysicsManager;
 
 /**
+ * The system that updates the sprites for their location in the physics world.
+ *
  * @author Jerry Springer
  * @project Autumn 2018
  */
 public class SpriteUpdateSystem extends EntitySystem {
 
+	/** The array that contains the corresponding entities. */
 	private ImmutableArray<Entity> entities;
 
+	/**
+	 * Creates a new sprite update system.
+	 */
 	public SpriteUpdateSystem() {
-
 		super();
 	}
 
+	/**
+	 * Called when a corresponding entity is added to the engine.
+	 *
+	 * @param engine the engine that contains the added entity.
+	 */
 	@Override
 	public void addedToEngine(Engine engine) {
 
@@ -34,6 +45,11 @@ public class SpriteUpdateSystem extends EntitySystem {
 						.get());
 	}
 
+	/**
+	 * Updates all sprites for their new position in the physics world.
+	 *
+	 * @param deltaTime the time since the last update.
+	 */
 	@Override
 	public void update(float deltaTime) {
 

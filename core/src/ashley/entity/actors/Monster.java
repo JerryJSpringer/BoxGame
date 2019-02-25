@@ -12,13 +12,21 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.managers.BodyGenerator;
 
 /**
+ * The monster class.
+ *
  * @author Jerry Springer
  * @version 02 18 2019
  */
 public class Monster extends Entity {
 
+	/** The JSON file that describes the monster. */
 	private static final String MONSTER_JSON = "core/assets/BodyDefinitions/Monster.json";
 
+	/**
+	 * Creates a new monster.
+	 *
+	 * @param world the physics world that the monster is created in.
+	 */
 	public Monster(final World world) {
 		super();
 

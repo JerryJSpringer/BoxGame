@@ -15,9 +15,19 @@ import com.badlogic.gdx.utils.JsonValue;
  */
 public class BodyGenerator {
 
+    /**
+     * Private class to prevent instantiation.
+     */
     private BodyGenerator() {
     }
 
+    /**
+     * Creates a new body for the given JSON file and the physics world.
+     *
+     * @param fileHandle the JSON file.
+     * @param world the physics world that the body will be created in.
+     * @return the body that is created from the JSON file.
+     */
     public static Body bodyGenerator(final FileHandle fileHandle,
                                      final World world) {
 
