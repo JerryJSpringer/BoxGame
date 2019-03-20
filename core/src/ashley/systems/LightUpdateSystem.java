@@ -1,30 +1,30 @@
 package ashley.systems;
 
-import ashley.components.*;
+import ashley.components.BodyComponent;
+import ashley.components.LightComponent;
+import ashley.components.MovableComponent;
+import box2dLight.Light;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 /**
- * The system that updates the sprites for their location in the physics world.
- *
  * @author Jerry Springer
- * @version Autumn 2018
+ * @version 03 20 2019
  */
-public class SpriteUpdateSystem extends EntitySystem {
+public class LightUpdateSystem extends EntitySystem {
 
-	/** The array that contains the corresponding entities. */
+	/** The array of entities. */
 	private ImmutableArray<Entity> entities;
 
 	/**
-	 * Creates a new sprite update system.
+	 * Creates a new movement system.
 	 */
-	public SpriteUpdateSystem() {
+	public LightUpdateSystem() {
 		super();
 	}
 
@@ -35,31 +35,30 @@ public class SpriteUpdateSystem extends EntitySystem {
 	 */
 	@Override
 	public void addedToEngine(Engine engine) {
-
 		entities = engine.getEntitiesFor(
 				Family.all(
 						BodyComponent.class,
-						RenderableComponent.class,
-						SpriteComponent.class)
+						MovableComponent.class,
+						LightComponent.class)
 						.get());
 	}
 
 	/**
-	 * Updates all sprites for their new position in the physics world.
+	 * Updates all movable bodies according to their linear velocity scaled to delta time.
 	 *
-	 * @param deltaTime the time since the last update.
+	 * @param deltaTime the time since the last engine update.
 	 */
 	@Override
 	public void update(float deltaTime) {
 
 		for(Entity e: entities) {
-
 			Body body = e.getComponent(BodyComponent.class).body;
+			Light light = e.getComponent(LightComponent.class).light;
+
 			Vector2 position = body.getPosition();
+			float radius = body.getFixtureList().first().getShape().getRadius();
 
-			Sprite sprite = e.getComponent(SpriteComponent.class).sprite;
-
-			sprite.setPosition(position.x, position.y);
+			light.setPosition(position.x + radius, position.y + radius);
 		}
 	}
 }

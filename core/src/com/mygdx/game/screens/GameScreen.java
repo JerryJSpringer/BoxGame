@@ -3,12 +3,10 @@ package com.mygdx.game.screens;
 import ashley.entity.actors.Character;
 import ashley.entity.actors.Monster;
 import ashley.entity.level.Wall;
-import ashley.systems.MovementSystem;
-import ashley.systems.PlayerInputSystem;
-import ashley.systems.RenderSystem;
-import ashley.systems.SpriteUpdateSystem;
+import ashley.systems.*;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.Matrix4;
@@ -18,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.managers.CollisionManager;
-import com.mygdx.game.managers.InputHandler;
+import com.mygdx.game.managers.GameInputAdapter;
 import com.mygdx.game.managers.PhysicsManager;
 
 /**
@@ -41,7 +39,7 @@ public class GameScreen implements Screen {
 
 	private RayHandler rayHandler;
 
-    public GameScreen(final MyGdxGame game, final InputHandler inputHandler) {
+    public GameScreen(final MyGdxGame game) {
 
         this.game = game;
 
@@ -51,7 +49,6 @@ public class GameScreen implements Screen {
         viewport = new FitViewport(PhysicsManager.WORLD_SIZE, PhysicsManager.WORLD_SIZE, camera);
 		camera.position.set(PhysicsManager.WORLD_SIZE / 2, PhysicsManager.WORLD_SIZE / 2, 0);
         game.batch.setProjectionMatrix(camera.combined);
-        inputHandler.setViewport(viewport);
 
 		debugRenderer = new Box2DDebugRenderer();
 		debugMatrix = new Matrix4(camera.combined);
@@ -59,10 +56,10 @@ public class GameScreen implements Screen {
         // Engine
         engine = new Engine();
 
-        engine.addSystem(new PlayerInputSystem());
 		engine.addSystem(new RenderSystem(game.batch));
         engine.addSystem(new MovementSystem());
         engine.addSystem(new SpriteUpdateSystem());
+        engine.addSystem(new LightUpdateSystem());
 
         // World
         world = new World(new Vector2(), false);
@@ -76,17 +73,16 @@ public class GameScreen implements Screen {
 		rayHandler.setBlurNum(2);
 		rayHandler.setCulling(true);
 		rayHandler.setShadows(false);
-		//rayHandler.setLightShader(Gaussian.createBlurShader((int) camera.viewportWidth, (int) camera.viewportHeight));
-
-		//PointLight p1 = new PointLight(rayHandler, 75, Color.WHITE, 20, 26, 26);
-		//p1.setSoft(true);
-		//p1.setStaticLight(false);
 
         // Entities
-		//engine.addEntity(new Background());
+		Character character = new Character(world, rayHandler);
+		engine.addEntity(character);
+
 		engine.addEntity(new Wall(world));
-        engine.addEntity(new Character(world, rayHandler, inputHandler));
         engine.addEntity(new Monster(world));
+
+        // Input Processor
+		Gdx.input.setInputProcessor(new GameInputAdapter(character, viewport));
     }
 
     @Override

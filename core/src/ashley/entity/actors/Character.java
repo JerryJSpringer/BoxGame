@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.managers.BodyGenerator;
-import com.mygdx.game.managers.InputHandler;
 
 /**
  * The character class.
@@ -33,9 +32,8 @@ public class Character extends Entity {
 	 *
 	 * @param world the physics world that the entity is being created in.
 	 * @param rayHandler the ray handler that is used to create the light.
-	 * @param inputHandler the input handler that handles player input.
 	 */
-    public Character(final World world, final RayHandler rayHandler, final InputHandler inputHandler) {
+    public Character(final World world, final RayHandler rayHandler) {
         super();
 
         // Create the body
@@ -58,7 +56,7 @@ public class Character extends Entity {
 
         // Adding all components
 		add(new BodyComponent(body));
-		add(new PlayerComponent(inputHandler));
+		add(new PlayerComponent());
 		add(new MovableComponent());
 		add(new RenderableComponent());
 		add(new LightComponent(light));

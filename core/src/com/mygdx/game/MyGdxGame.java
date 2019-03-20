@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.managers.InputHandler;
 import com.mygdx.game.screens.GameScreen;
 
 
@@ -17,17 +16,10 @@ public class MyGdxGame extends Game {
 	/** The sprite batch that is used to draw graphics. */
 	public SpriteBatch batch;
 
-	/** The input handler which handles player input. */
-	public InputHandler inputHandler;
-
 	/**
 	 * Creates a new game object.
-	 *
-	 * @param inputHandler handles the players input.
 	 */
-	public MyGdxGame(InputHandler inputHandler) {
-
-		this.inputHandler = inputHandler;
+	public MyGdxGame() {
 	}
 
 	/**
@@ -38,7 +30,7 @@ public class MyGdxGame extends Game {
 
 		batch = new SpriteBatch();
 
-		this.setScreen(new GameScreen(this, inputHandler));
+		this.setScreen(new GameScreen(this));
 	}
 
 	@Override
