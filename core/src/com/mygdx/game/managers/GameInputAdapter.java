@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class GameInputAdapter extends InputAdapter {
 
 		private Viewport viewport;
-		private Character character;
 
 		private Body body;
 		private Light light;
@@ -33,6 +32,11 @@ public class GameInputAdapter extends InputAdapter {
 		private int left;
 		private int right;
 
+		private boolean forwardPressed;
+		private boolean backwardPressed;
+		private boolean leftPressed;
+		private boolean rightPressed;
+
 		public GameInputAdapter(Character character, Viewport viewport) {
 			this(character, viewport, "W", "S", "A", "D");
 		}
@@ -41,7 +45,6 @@ public class GameInputAdapter extends InputAdapter {
 								String forward, String backward, String left, String right) {
 			super();
 
-			this.character = character;
 			this.viewport = viewport;
 
 			body = character.getComponent(BodyComponent.class).body;
@@ -49,30 +52,20 @@ public class GameInputAdapter extends InputAdapter {
 			sprite = character.getComponent(SpriteComponent.class).sprite;
 			velocity = character.getComponent(MovableComponent.class).velocity;
 
+			setKeyBinds(forward, backward, left, right);
+		}
+
+		public void setKeyBinds(final String forward, final String backward, final String left, final String right) {
 			this.forward = Input.Keys.valueOf(forward);
 			this.backward = Input.Keys.valueOf(backward);
 			this.left = Input.Keys.valueOf(left);
 			this.right = Input.Keys.valueOf(right);
-
 		}
 
 		@Override
 		public boolean keyDown(int keycode) {
 
-			/* Temporary code for movement speed, refactor later. */
-			int speed = 6;
-
-			if (keycode == forward)
-				velocity.y += speed;
-
-			if (keycode == backward)
-				velocity.y -= speed;
-
-			if (keycode == left)
-				velocity.x -= speed;
-
-			if (keycode == right)
-				velocity.x += speed;
+			updateKeys(keycode);
 
 			return true;
 		}
@@ -80,22 +73,40 @@ public class GameInputAdapter extends InputAdapter {
 		@Override
 		public boolean keyUp(int keycode) {
 
+			updateKeys(keycode);
+
+			return true;
+		}
+
+		private void updateKeys(int keycode) {
+
 			/* Temporary code for movement speed, refactor later. */
 			int speed = 6;
 
+			// Update which keys are being pressed
 			if (keycode == forward)
+				forwardPressed = !forwardPressed;
+			else if (keycode == backward)
+				backwardPressed = !backwardPressed;
+			else if (keycode == left)
+				leftPressed = !leftPressed;
+			else if (keycode == right)
+				rightPressed = !rightPressed;
+
+			// Update movement speeds based on which movement keys are pressed
+			if (forwardPressed == backwardPressed)
 				velocity.y = 0;
+			else if (forwardPressed)
+				velocity.y = speed;
+			else
+				velocity.y = -speed;
 
-			if (keycode == backward)
-				velocity.y = 0;
-
-			if (keycode == left)
+			if (leftPressed == rightPressed)
 				velocity.x = 0;
-
-			if (keycode == right)
-				velocity.x = 0;
-
-			return true;
+			else if (leftPressed)
+				velocity.x = -speed;
+			else
+				velocity.x = speed;
 		}
 
 		@Override
