@@ -1,4 +1,4 @@
-package com.mygdx.game.managers;
+package com.mygdx.game.managers.world;
 
 /**
  * @author Jerry Springer

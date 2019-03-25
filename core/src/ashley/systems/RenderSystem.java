@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * The system that is used to render all sprites.
  *
  * @author Jerry Springer
- * @project Autumn 2018
+ * @version 03 20 2019
  */
 public class RenderSystem extends EntitySystem {
 

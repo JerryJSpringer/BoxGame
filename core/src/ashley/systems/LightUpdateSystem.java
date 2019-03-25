@@ -3,6 +3,7 @@ package ashley.systems;
 import ashley.components.BodyComponent;
 import ashley.components.LightComponent;
 import ashley.components.MovableComponent;
+import ashley.components.SpriteComponent;
 import box2dLight.Light;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -59,6 +60,11 @@ public class LightUpdateSystem extends EntitySystem {
 			float radius = body.getFixtureList().first().getShape().getRadius();
 
 			light.setPosition(position.x + radius, position.y + radius);
+
+			SpriteComponent spriteComponent = e.getComponent(SpriteComponent.class);
+
+			if (spriteComponent != null)
+				light.setDirection(spriteComponent.angle);
 		}
 	}
 }

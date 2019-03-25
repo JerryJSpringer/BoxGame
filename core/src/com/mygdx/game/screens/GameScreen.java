@@ -15,9 +15,9 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.managers.CollisionManager;
-import com.mygdx.game.managers.GameInputAdapter;
-import com.mygdx.game.managers.PhysicsManager;
+import com.mygdx.game.managers.world.CollisionManager;
+import com.mygdx.game.managers.input.GameInputAdapter;
+import com.mygdx.game.managers.world.PhysicsManager;
 
 /**
  * The main game screen.
@@ -53,18 +53,25 @@ public class GameScreen implements Screen {
 		debugRenderer = new Box2DDebugRenderer();
 		debugMatrix = new Matrix4(camera.combined);
 
+
         // Engine
         engine = new Engine();
 
+		// Input Processing
+        InputHandlerSystem inputHandlerSystem = new InputHandlerSystem(viewport);
+		Gdx.input.setInputProcessor(new GameInputAdapter(0, inputHandlerSystem));
+
+		// Add Systems to engine
 		engine.addSystem(new RenderSystem(game.batch));
+		engine.addSystem(inputHandlerSystem);
         engine.addSystem(new MovementSystem());
         engine.addSystem(new SpriteUpdateSystem());
         engine.addSystem(new LightUpdateSystem());
 
+
         // World
         world = new World(new Vector2(), false);
         world.setContactListener(new CollisionManager());
-
 
 		// Lighting and Raycast Handler
 		rayHandler = new RayHandler(world);
@@ -75,18 +82,15 @@ public class GameScreen implements Screen {
 		rayHandler.setShadows(false);
 
         // Entities
-		Character character = new Character(world, rayHandler);
+		Character character = new Character(0, world, rayHandler);
 		engine.addEntity(character);
 
 		engine.addEntity(new Wall(world));
         engine.addEntity(new Monster(world));
-
-        // Input Processor
-		Gdx.input.setInputProcessor(new GameInputAdapter(character, viewport));
     }
 
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
 
     	viewport.apply();
 
@@ -100,7 +104,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
     	viewport.update(width, height);
     	camera.position.set(PhysicsManager.WORLD_SIZE / 2, PhysicsManager.WORLD_SIZE / 2, 0);
 

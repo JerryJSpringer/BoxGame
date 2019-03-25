@@ -10,9 +10,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class SpriteComponent implements Component {
 
     public Sprite sprite;
+    public float angle;
 
-    public SpriteComponent(Sprite sprite) {
+    public SpriteComponent(final Sprite sprite) {
 
         this.sprite = sprite;
+        angle = 0;
     }
+
+    public SpriteComponent(final Sprite sprite, final float angle) {
+
+    	this.sprite = sprite;
+    	this.angle = angle;
+	}
 }

@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		int width = 676;
 		int height = 676;
 
-		config.samples = 3;
+		config.samples = 6;
 		config.width = width;
 		config.height = height;
 		config.title = "Game";

@@ -7,14 +7,15 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.game.managers.PhysicsManager;
+import com.mygdx.game.managers.world.PhysicsManager;
 
 /**
  * The movement system for all movable bodies.
  *
  * @author Jerry Springer
- * @project Autumn 2018
+ * @version 03 20 2019
  */
 public class MovementSystem extends EntitySystem {
 
@@ -54,7 +55,8 @@ public class MovementSystem extends EntitySystem {
             Body body = e.getComponent(BodyComponent.class).body;
             MovableComponent movable = e.getComponent(MovableComponent.class);
 
-            body.setLinearVelocity(movable.velocity.scl((float) (deltaTime / PhysicsManager.DELTA_CONSTANT)));
+			Vector2 velocity = movable.direction.setLength(movable.speed);
+            body.setLinearVelocity(velocity.scl((float) (deltaTime / PhysicsManager.DELTA_CONSTANT)));
         }
     }
 }

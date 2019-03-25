@@ -57,9 +57,13 @@ public class SpriteUpdateSystem extends EntitySystem {
 			Body body = e.getComponent(BodyComponent.class).body;
 			Vector2 position = body.getPosition();
 
-			Sprite sprite = e.getComponent(SpriteComponent.class).sprite;
+			SpriteComponent spriteComponent = e.getComponent(SpriteComponent.class);
+
+			Sprite sprite = spriteComponent.sprite;
+			float angle = spriteComponent.angle;
 
 			sprite.setPosition(position.x, position.y);
+			sprite.setRotation(angle);
 		}
 	}
 }

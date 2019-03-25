@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.game.managers.BodyGenerator;
+import com.mygdx.game.managers.world.BodyGenerator;
 
 /**
  * The character class.
@@ -27,13 +27,16 @@ public class Character extends Entity {
 	/** The degree of the cone light that the character uses. */
 	private static final float CONE_DEGREE = 45;
 
+	/** The default speed of a given character. */
+	private static final int speed = 6;
+
 	/**
 	 * Creates a new character in the physics world.
 	 *
 	 * @param world the physics world that the entity is being created in.
 	 * @param rayHandler the ray handler that is used to create the light.
 	 */
-    public Character(final World world, final RayHandler rayHandler) {
+    public Character(final int playerId, final World world, final RayHandler rayHandler) {
         super();
 
         // Create the body
@@ -56,8 +59,8 @@ public class Character extends Entity {
 
         // Adding all components
 		add(new BodyComponent(body));
-		add(new PlayerComponent());
-		add(new MovableComponent());
+		add(new PlayerComponent(playerId));
+		add(new MovableComponent(speed));
 		add(new RenderableComponent());
 		add(new LightComponent(light));
 		add(new SpriteComponent(sprite));
